@@ -120,8 +120,7 @@ Este proyecto fue desarrollado con fines académicos, aplicando buenas práctica
     └── esquema.sql
 ```
 ##Instalar dependencia
-```npm install
-```
+``` npm install```
 ###Configurar variables de entorno
 
 Crear un archivo `.env` en la raíz del proyecto con el siguiente contenido:
