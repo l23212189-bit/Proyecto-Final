@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar sesión</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/bootstrap/bootstrap.css">
+  <script src="/bootstrap/bootstrap.bundle.js" defer></script>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body class="bg-light">
+
+  <div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="text-center" style="width: 100%; max-width: 420px;">
+
+      <!-- BIENVENIDA -->
+      <h1 class="fw-bold text-danger mb-1">
+        Bienvenido a la página de la Cruz Roja
+      </h1>
+      <p class="text-muted mb-4">
+        Sistema de gestión hospitalaria
+      </p>
+
+      <!-- TARJETA LOGIN -->
+      <div class="card shadow p-4">
+
+        <div class="text-center mb-4">
+          <i class="bi bi-person-circle fs-1 text-danger"></i>
+          <h4 class="mt-2">Inicio de sesión</h4>
+        </div>
+
+        <form action="/login" method="POST">
+
+          <div class="mb-3 text-start">
+            <label class="form-label">Nombre de usuario</label>
+            <input type="text"
+                   name="nombre_usuario"
+                   class="form-control"
+                   required>
+          </div>
+
+          <div class="mb-3 text-start">
+            <label class="form-label">Contraseña</label>
+            <input type="password"
+                   name="password"
+                   class="form-control"
+                   required>
+          </div>
+
+          <button type="submit" class="btn btn-danger w-100">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Ingresar
+          </button>
+        </form>
+
+        <div class="text-center mt-3">
+          <p class="mb-0">
+            ¿No tienes cuenta?
+            <a href="/registro.html" class="text-danger fw-bold">
+              Regístrate aquí
+            </a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

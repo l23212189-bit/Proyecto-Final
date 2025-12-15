@@ -1,0 +1,41 @@
+<form action="/pacientes/crear" method="POST" class="card p-4 shadow">
+
+  <div class="row g-3">
+
+    <div class="col-md-6">
+      <label class="form-label">Nombre completo</label>
+      <input class="form-control" name="nombre" required>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Edad</label>
+      <input type="number" class="form-control" name="edad" required>
+    </div>
+
+    <div class="col-md-3">
+      <label class="form-label">Género</label>
+      <select class="form-select" name="genero">
+        <option value="F">Femenino</option>
+        <option value="M">Masculino</option>
+        <option value="Otro">Otro</option>
+      </select>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Teléfono</label>
+      <input class="form-control" name="telefono">
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Correo</label>
+      <input type="email" class="form-control" name="correo">
+    </div>
+
+    <div class="col-12 text-center mt-3">
+      <button class="btn btn-success w-100">
+        Guardar paciente
+      </button>
+    </div>
+
+  </div>
+</form>

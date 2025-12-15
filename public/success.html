@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Médico guardado</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Registro correcto</h1>
+  <p>Médico <span id="nombre"></span> registrado con éxito en la base de datos.</p>
+
+  <button onclick="window.location.href='index.html'">Regresar</button>
+
+  <script>
+    // Captura el parámetro "nombre" enviado por la URL
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById('nombre').textContent = params.get('nombre') || '';
+  </script>
+</body>
+</html>

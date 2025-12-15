@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pacientes | Excel</title>
+
+  <!-- Bootstrap LOCAL -->
+  <link rel="stylesheet" href="/bootstrap/bootstrap.css">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+  <!-- Tu CSS -->
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body class="bg-light">
+
+  <!-- NAVBAR -->
+  <div id="navbar"></div>
+
+  <!-- CONTENIDO -->
+  <div class="container mt-5 pt-4">
+
+    <div class="card shadow-lg mx-auto" style="max-width: 600px;">
+      <div class="card-header bg-danger text-white text-center">
+        <h4 class="mb-0">
+          <i class="bi bi-people-fill"></i> Gestión de Pacientes
+        </h4>
+      </div>
+
+      <div class="card-body">
+
+        <!-- SUBIR EXCEL -->
+        <h5 class="text-center mb-3">
+          <i class="bi bi-upload"></i> Cargar pacientes desde Excel
+        </h5>
+
+        <form action="/upload-pacientes"
+              method="POST"
+              enctype="multipart/form-data"
+              class="mb-4">
+
+          <div class="mb-3">
+            <input type="file"
+                   class="form-control"
+                   name="excelFile"
+                   accept=".xlsx"
+                   required>
+          </div>
+
+          <div class="d-grid">
+            <button class="btn btn-danger">
+              <i class="bi bi-file-earmark-arrow-up"></i> Subir archivo
+            </button>
+          </div>
+        </form>
+
+        <hr>
+
+        <!-- DESCARGAR -->
+        <div class="d-grid gap-2">
+          <a href="/download-pacientes" class="btn btn-outline-danger">
+            <i class="bi bi-download"></i> Descargar pacientes
+          </a>
+
+          <a href="/" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver al menú
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Bootstrap -->
+  <script src="/bootstrap/bootstrap.bundle.js"></script>
+
+  <!-- NAVBAR DINÁMICO -->
+  <script>
+    fetch('/navbar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('navbar').innerHTML = html;
+
+        fetch('/tipo-usuario')
+          .then(res => res.json())
+          .then(data => {
+            const menu = document.getElementById('menu');
+            const tipo = data.tipo_usuario;
+
+            if (tipo === 'admin') {
+              menu.innerHTML += `
+                <li class="nav-item"><a class="nav-link" href="/ver-usuarios">Usuarios</a></li>
+                <li class="nav-item"><a class="nav-link" href="/gestionar-registros">Registros</a></li>
+                <li class="nav-item"><a class="nav-link" href="/ver-pacientes">Pacientes</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/pacientes.html">Excel</a></li>
+                <li class="nav-item"><a class="nav-link" href="/medicos">Médicos</a></li>
+              `;
+            }
+
+            if (tipo === 'medico') {
+              menu.innerHTML += `
+                <li class="nav-item"><a class="nav-link" href="/ver-pacientes">Pacientes</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/pacientes.html">Excel</a></li>
+              `;
+            }
+
+            if (tipo === 'paciente') {
+              menu.innerHTML += `
+                <li class="nav-item"><a class="nav-link" href="/ver-mis-datos">Mis datos</a></li>
+              `;
+            }
+
+            menu.innerHTML += `
+              <li class="nav-item"><a class="nav-link" href="/logout">Cerrar sesión</a></li>
+            `;
+          });
+      });
+  </script>
+
+</body>
+</html>

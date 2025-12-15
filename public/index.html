@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio | Sistema Clínico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="/bootstrap/bootstrap.css">
+  <script src="/bootstrap/bootstrap.bundle.js" defer></script>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body class="bg-light">
+
+  <!-- 🔹 Navbar dinámico -->
+  <div id="navbar"></div>
+
+  <!-- 🔹 Contenido principal -->
+  <main class="container mt-5 pt-4">
+
+    <div class="text-center mb-5">
+      <h1 class="fw-bold">
+        <i class="bi bi-hospital"></i>
+        Sistema de Gestión Clínica
+      </h1>
+      <p class="lead">
+        Administración de pacientes, médicos y citas médicas
+      </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-md-4 role-admin role-medico role-enfermero">
+        <div class="card shadow text-center">
+          <div class="card-body">
+            <i class="bi bi-clipboard-pulse fs-1 text-danger"></i>
+            <h5 class="card-title mt-3">Pacientes</h5>
+            <a href="/ver-pacientes" class="btn btn-danger mt-2">
+              Ver pacientes
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 role-admin role-medico">
+        <div class="card shadow text-center">
+          <div class="card-body">
+            <i class="bi bi-calendar-check fs-1 text-primary"></i>
+            <h5 class="card-title mt-3">Citas</h5>
+            <a href="/buscar-citas-medico" class="btn btn-primary mt-2">
+              Ver citas
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 role-paciente">
+        <div class="card shadow text-center">
+          <div class="card-body">
+            <i class="bi bi-person-circle fs-1 text-success"></i>
+            <h5 class="card-title mt-3">Mis datos</h5>
+            <a href="/ver-mis-datos" class="btn btn-success mt-2">
+              Ver mis datos
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 🔹 Script navbar (UNO SOLO) -->
+  <script>
+    fetch('/navbar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('navbar').innerHTML = html;
+      });
+  </script>
+
+</body>
+</html>

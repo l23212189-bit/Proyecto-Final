@@ -1,0 +1,105 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger fixed-top shadow">
+  <div class="container-fluid">
+
+    <a class="navbar-brand fw-bold" href="/index.html">
+      <i class="bi bi-heart-pulse-fill"></i> Clínica
+    </a>
+
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto">
+
+        <!-- ================= ADMIN ================= -->
+        <li class="nav-item role-admin">
+          <a class="nav-link nav-admin" href="/gestionar-registros">
+            <i class="bi bi-people"></i> Usuarios
+          </a>
+        </li>
+
+        <li class="nav-item role-admin">
+          <a class="nav-link nav-admin" href="/registrar-medico">
+            <i class="bi bi-person-badge"></i> Registrar Médico
+          </a>
+        </li>
+
+        <li class="nav-item role-admin role-medico role-enfermero">
+          <a class="nav-link nav-clinica" href="/ver-medicos">
+            <i class="bi bi-clipboard2-pulse"></i> Médicos
+          </a>
+        </li>
+
+        <li class="nav-item role-admin">
+          <a class="nav-link nav-admin" href="/registrar-consultorio">
+            <i class="bi bi-building-add"></i> Registrar Consultorio
+          </a>
+        </li>
+        <li class="nav-item role-admin">
+          <a class="nav-link" href="/ver-enfermeros">
+          <i class="bi bi-heart-pulse"></i> Enfermeros
+          </a>
+        </li>
+
+        <li class="nav-item role-admin">
+          <a class="nav-link" href="/registrar-enfermero">
+          <i class="bi bi-person-plus"></i> Registrar Enfermero
+          </a>
+        </li>
+
+        <!-- ========== MÉDICO / ENFERMERO ========== -->
+        <li class="nav-item role-medico role-enfermero">
+          <a class="nav-link nav-medico" href="/ver-pacientes">
+            <i class="bi bi-person-lines-fill"></i> Pacientes
+          </a>
+        </li>
+
+        <li class="nav-item role-admin role-medico role-enfermero">
+          <a class="nav-link nav-medico" href="/registrar-paciente">
+            <i class="bi bi-person-plus"></i> Registrar Paciente
+          </a>
+        </li>
+
+        <li class="nav-item role-enfermero">
+          <a class="nav-link nav-enfermero" href="/registrar-signos">
+            <i class="bi bi-heart-pulse"></i> Registrar Signos
+          </a>
+        </li>
+
+        <!-- ========== CONSULTORIOS ========== -->
+        <li class="nav-item role-admin role-medico role-enfermero">
+          <a class="nav-link nav-clinica" href="/ver-consultorios">
+            <i class="bi bi-building"></i> Consultorios
+          </a>
+        </li>
+
+        <!-- ================= PACIENTE ================= -->
+        <li class="nav-item role-paciente">
+          <a class="nav-link nav-paciente" href="/ver-mis-datos">
+            <i class="bi bi-clipboard-heart"></i> Mis datos
+          </a>
+        </li>
+
+        <!-- ================= USUARIO ================= -->
+        <li class="nav-item">
+          <span class="nav-link text-warning fw-bold">
+            <i class="bi bi-person-circle"></i>
+            <span id="user-name"></span>
+          </span>
+        </li>
+
+        <!-- ================= LOGOUT ================= -->
+        <li class="nav-item">
+          <a class="nav-link text-warning" href="/logout">
+            <i class="bi bi-box-arrow-right"></i> Salir
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
