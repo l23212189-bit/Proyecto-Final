@@ -118,8 +118,10 @@ Este proyecto fue desarrollado con fines académicos, aplicando buenas práctica
 │
 └── 📁 database/
     └── esquema.sql
+```
 ##Instalar dependencia
 ```npm install
+```
 ###Configurar variables de entorno
 
 Crear un archivo `.env` en la raíz del proyecto con el siguiente contenido:
@@ -130,9 +132,10 @@ DB_USER=root
 DB_PASSWORD=tu_password
 DB_NAME=gestion_clinica
 SESSION_SECRET=secreto_super_seguro
-
+```
 ###Ejecutar el servidor
 ```npm start
+```
 ## Middleware de seguridad
 
 El sistema implementa **middlewares personalizados** para proteger las rutas del sistema:
@@ -140,6 +143,7 @@ El sistema implementa **middlewares personalizados** para proteger las rutas del
 ```js
 requireLogin
 requireRole(['admin', 'medico', 'enfermero', 'paciente'])
+```
 ###  Función de cada middleware
 
 - **requireLogin**  
