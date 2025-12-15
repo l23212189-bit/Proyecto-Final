@@ -1,0 +1,536 @@
+mysql> DROP DATABASE IF EXISTS desktop_administrativo;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> CREATE DATABASE desktop_administrativo;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> USE desktop_administrativo;
+Database changed
+mysql> DROP TABLE IF EXISTS codigos_acceso;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql>
+mysql> CREATE TABLE codigos_acceso (
+    ->   codigo VARCHAR(10) NOT NULL,
+    ->   tipo_usuario ENUM('admin','medico','paciente','enfermero') NOT NULL,
+    ->   PRIMARY KEY (codigo)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql>
+mysql> INSERT INTO codigos_acceso VALUES
+    -> ('adm753','admin'),
+    -> ('med369','medico'),
+    -> ('pac258','paciente'),
+    -> ('enf147','enfermero');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> DROP TABLE IF EXISTS usuarios;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql>
+mysql> CREATE TABLE usuarios (
+    ->   id INT NOT NULL AUTO_INCREMENT,
+    ->   nombre_usuario VARCHAR(50) NOT NULL,
+    ->   password_hash VARCHAR(255) NOT NULL,
+    ->   tipo_usuario ENUM('admin','medico','paciente','enfermero') NOT NULL DEFAULT 'paciente',
+    ->   PRIMARY KEY (id),
+    ->   UNIQUE (nombre_usuario)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DROP TABLE IF EXISTS medicos;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql>
+mysql> CREATE TABLE medicos (
+    ->   id INT NOT NULL AUTO_INCREMENT,
+    ->   nombre VARCHAR(100) NOT NULL,
+    ->   especialidad VARCHAR(100) NOT NULL,
+    ->   PRIMARY KEY (id)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DROP TABLE IF EXISTS pacientes;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql>
+mysql> CREATE TABLE pacientes (
+    ->   id INT NOT NULL AUTO_INCREMENT,
+    ->   nombre VARCHAR(100) NOT NULL,
+    ->   edad INT NOT NULL,
+    ->   frecuencia_cardiaca INT,
+    ->   usuario_id INT,
+    ->   PRIMARY KEY (id),
+    ->   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DROP TABLE IF EXISTS citas;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql>
+mysql> CREATE TABLE citas (
+    ->   id INT NOT NULL AUTO_INCREMENT,
+    ->   paciente_id INT NOT NULL,
+    ->   medico_id INT NOT NULL,
+    ->   consultorio_id INT NOT NULL,
+    ->   fecha DATE NOT NULL,
+    ->   hora TIME NOT NULL,
+    ->   estado ENUM('programada','cancelada','finalizada') DEFAULT 'programada',
+    ->
+    ->   PRIMARY KEY (id),
+    ->   FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
+    ->   FOREIGN KEY (medico_id) REFERENCES medicos(id),
+    ->   FOREIGN KEY (consultorio_id) REFERENCES consultorios(id)
+    -> );
+ERROR 1824 (HY000): Failed to open the referenced table 'consultorios'
+mysql> DROP TABLE IF EXISTS consultorios;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql>
+mysql> CREATE TABLE consultorios (
+    ->   id INT NOT NULL AUTO_INCREMENT,
+    ->   nombre VARCHAR(50) NOT NULL,
+    ->   ubicacion VARCHAR(100),
+    ->   PRIMARY KEY (id)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DROP TABLE IF EXISTS citas;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql>
+mysql> CREATE TABLE citas (
+    ->   id INT NOT NULL AUTO_INCREMENT,
+    ->   paciente_id INT NOT NULL,
+    ->   medico_id INT NOT NULL,
+    ->   consultorio_id INT NOT NULL,
+    ->   fecha DATE NOT NULL,
+    ->   hora TIME NOT NULL,
+    ->   estado ENUM('programada','cancelada','finalizada') DEFAULT 'programada',
+    ->
+    ->   PRIMARY KEY (id),
+    ->   FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
+    ->   FOREIGN KEY (medico_id) REFERENCES medicos(id),
+    ->   FOREIGN KEY (consultorio_id) REFERENCES consultorios(id)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> ALTER TABLE pacientes
+    -> ADD sexo ENUM('F','M','Otro') AFTER nombre,
+    -> ADD telefono VARCHAR(15) AFTER edad,
+    -> ADD correo VARCHAR(100) AFTER telefono,
+    -> ADD peso DECIMAL(5,2) AFTER frecuencia_cardiaca,
+    -> ADD estatura DECIMAL(4,2) AFTER peso,
+    -> ADD tipo_sangre VARCHAR(5) AFTER estatura,
+    -> ADD alergias TEXT AFTER tipo_sangre,
+    -> ADD padecimientos TEXT AFTER alergias,
+    -> ADD fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE citas
+    -> ADD urgencia ENUM('alta','media','baja') DEFAULT 'media' AFTER hora,
+    -> ADD motivo TEXT AFTER urgencia,
+    -> ADD fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> EXIT;
+Bye
+
+C:\tbd-2025\Proyecto_base-datos\gestion-pacientes>npm install pdfkit multer
+
+up to date, audited 165 packages in 1s
+
+24 packages are looking for funding
+  run `npm fund` for details
+
+2 vulnerabilities (1 moderate, 1 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+
+C:\tbd-2025\Proyecto_base-datos\gestion-pacientes>mysql -u root -p
+Enter password: ************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 34
+Server version: 8.0.44 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> USE desktop_administrativo;
+Database changed
+mysql> ALTER TABLE pacientes
+    -> CHANGE sexo genero VARCHAR(10);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESCRIBE pacientes;
++---------------------+--------------+------+-----+-------------------+-------------------+
+| Field               | Type         | Null | Key | Default           | Extra             |
++---------------------+--------------+------+-----+-------------------+-------------------+
+| id                  | int          | NO   | PRI | NULL              | auto_increment    |
+| nombre              | varchar(100) | NO   |     | NULL              |                   |
+| genero              | varchar(10)  | YES  |     | NULL              |                   |
+| edad                | int          | NO   |     | NULL              |                   |
+| telefono            | varchar(15)  | YES  |     | NULL              |                   |
+| correo              | varchar(100) | YES  |     | NULL              |                   |
+| frecuencia_cardiaca | int          | YES  |     | NULL              |                   |
+| peso                | decimal(5,2) | YES  |     | NULL              |                   |
+| estatura            | decimal(4,2) | YES  |     | NULL              |                   |
+| tipo_sangre         | varchar(5)   | YES  |     | NULL              |                   |
+| alergias            | text         | YES  |     | NULL              |                   |
+| padecimientos       | text         | YES  |     | NULL              |                   |
+| usuario_id          | int          | YES  | MUL | NULL              |                   |
+| fecha_registro      | datetime     | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++---------------------+--------------+------+-----+-------------------+-------------------+
+14 rows in set (0.01 sec)
+
+mysql> SHOW TABLE pacientes;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'pacientes' at line 1
+mysql> ALTER TABLE pacientes
+    -> ADD tipo_paciente ENUM(
+    ->   'general',
+    ->   'pediatrico',
+    ->   'oncologico',
+    ->   'obstetrico',
+    ->   'geriatrico'
+    -> ) DEFAULT 'general';
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESCRIBE pacientes;
++---------------------+---------------------------------------------------------------------+------+-----+-------------------+-------------------+
+| Field               | Type                                                                | Null | Key | Default           | Extra             |
++---------------------+---------------------------------------------------------------------+------+-----+-------------------+-------------------+
+| id                  | int                                                                 | NO   | PRI | NULL              | auto_increment    |
+| nombre              | varchar(100)                                                        | NO   |     | NULL              |                   |
+| genero              | varchar(10)                                                         | YES  |     | NULL              |                   |
+| edad                | int                                                                 | NO   |     | NULL              |                   |
+| telefono            | varchar(15)                                                         | YES  |     | NULL              |                   |
+| correo              | varchar(100)                                                        | YES  |     | NULL              |                   |
+| frecuencia_cardiaca | int                                                                 | YES  |     | NULL              |                   |
+| peso                | decimal(5,2)                                                        | YES  |     | NULL              |                   |
+| estatura            | decimal(4,2)                                                        | YES  |     | NULL              |                   |
+| tipo_sangre         | varchar(5)                                                          | YES  |     | NULL              |                   |
+| alergias            | text                                                                | YES  |     | NULL              |                   |
+| padecimientos       | text                                                                | YES  |     | NULL              |                   |
+| usuario_id          | int                                                                 | YES  | MUL | NULL              |                   |
+| fecha_registro      | datetime                                                            | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| tipo_paciente       | enum('general','pediatrico','oncologico','obstetrico','geriatrico') | YES  |     | general           |                   |
++---------------------+---------------------------------------------------------------------+------+-----+-------------------+-------------------+
+15 rows in set (0.07 sec)
+
+mysql> SELECT DISTINCT tipo_paciente FROM pacientes;
++---------------+
+| tipo_paciente |
++---------------+
+| general       |
++---------------+
+1 row in set (0.03 sec)
+
+mysql> ALTER TABLE consultorios
+    -> ADD estado ENUM('disponible','ocupado','limpieza')
+    -> DEFAULT 'disponible';
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE medicos
+    -> ADD usuario_id INT UNIQUE;
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE medicos
+    -> ADD CONSTRAINT fk_medico_usuario
+    -> FOREIGN KEY (usuario_id) REFERENCES usuarios(id);
+Query OK, 3 rows affected (0.16 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE enfermeros (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   usuario_id INT UNIQUE,
+    ->   nombre VARCHAR(100) NOT NULL,
+    ->   turno VARCHAR(50),
+    ->
+    ->   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> SELECT * FROM pacientes;
++----+-------------------+--------+------+------------+----------------------+---------------------+-------+----------+-------------+------------+---------------+------------+---------------------+---------------+
+| id | nombre            | genero | edad | telefono   | correo               | frecuencia_cardiaca | peso  | estatura | tipo_sangre | alergias   | padecimientos | usuario_id | fecha_registro      | tipo_paciente |
++----+-------------------+--------+------+------------+----------------------+---------------------+-------+----------+-------------+------------+---------------+------------+---------------------+---------------+
+|  1 | Guadalupe Camacho | F      |   48 | 6641846239 | gcmcho32@gmail.com   |                  95 | 58.30 |     1.65 | B+          | Ninguna    | Ninguna       |       NULL | 2025-12-14 02:46:24 | geriatrico    |
+|  3 | Guadalupe Camacho | F      |   52 | 6642358947 | gcmcho32@gmail.com   |                  89 | 58.90 |     1.63 | O+          | Penicilina | Ninguno       |       NULL | 2025-12-14 13:42:33 | general       |
+|  5 | Mariana Ramírez   | F      |   25 | 6641846239 | MariRM4810@gmail.com |                  78 | 66.80 |     1.71 | A-          | Penicilina | Asma          |       NULL | 2025-12-14 15:50:33 | obstetrico    |
+|  6 | Carolina          | F      |    8 | 6642358977 | caro4810@gmail.com   |                 102 | 48.60 |     1.50 | AB-         | N/A        | Migrañas      |       NULL | 2025-12-14 16:58:57 | pediatrico    |
++----+-------------------+--------+------+------------+----------------------+---------------------+-------+----------+-------------+------------+---------------+------------+---------------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM usuarios;
++----+----------------+--------------------------------------------------------------+--------------+
+| id | nombre_usuario | password_hash                                                | tipo_usuario |
++----+----------------+--------------------------------------------------------------+--------------+
+|  1 | Kathy          | $2b$10$59GQf.Y.NUEoFV/vbCeTEuvC84qGwukHmpbIe.7W1yRd9K8GhsaJ6 | admin        |
+|  2 | Yanelli        | $2b$10$n0ZZ/oNbnToQVDLe2EGWwebutwiwwsuTQSepsArp6Rn8CDMYBXFpq | enfermero    |
+|  3 | Marlenne       | $2b$10$1NnDvDyVUuSItoXZ/oR/LOOOE8Cbc4eAaXNbQSNbKy.de0k3piOHW | enfermero    |
+|  4 | Guadalupe      | $2b$10$pMMlJKm06m.F404zMJfAueQoWWyByOgRdTuibihGImpDsANls783O | paciente     |
+|  5 | Camila         | $2b$10$jlzWgATPHLcG4FZyZeKqD.mZfoO4J9Oj6dIHwjx7ZhvDf4SySb8Oq | enfermero    |
+|  7 | Jesús Martínez | $2b$10$GoeBxkaf3FTRcWUpYCMNAehZ5ULAgwvVstgG6OSwY/AlT/0TcUuF2 | medico       |
+|  8 | Leonardo       | $2b$10$PkhB1p0jiGnsoxZz7f.weectqLbCNIQ.nhWfo8QO7TSggV7Ss6.ru | medico       |
+|  9 | Juan15         | $2b$10$4Ytxowi6fYmmwa5KSfqnneiCD7iWF392r3/jfRUdUY0ZirgSQp1SK | medico       |
++----+----------------+--------------------------------------------------------------+--------------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE pacientes
+    -> ADD COLUMN usuario_id INT;
+ERROR 1060 (42S21): Duplicate column name 'usuario_id'
+mysql>
+mysql> ALTER TABLE pacientes
+    -> ADD CONSTRAINT fk_paciente_usuario
+    -> FOREIGN KEY (usuario_id)
+    -> REFERENCES usuarios(id)
+    -> ON DELETE CASCADE;
+Query OK, 4 rows affected (0.06 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> DESCRIBE pacientes;
++---------------------+---------------------------------------------------------------------+------+-----+-------------------+-------------------+
+| Field               | Type                                                                | Null | Key | Default           | Extra             |
++---------------------+---------------------------------------------------------------------+------+-----+-------------------+-------------------+
+| id                  | int                                                                 | NO   | PRI | NULL              | auto_increment    |
+| nombre              | varchar(100)                                                        | NO   |     | NULL              |                   |
+| genero              | varchar(10)                                                         | YES  |     | NULL              |                   |
+| edad                | int                                                                 | NO   |     | NULL              |                   |
+| telefono            | varchar(15)                                                         | YES  |     | NULL              |                   |
+| correo              | varchar(100)                                                        | YES  |     | NULL              |                   |
+| frecuencia_cardiaca | int                                                                 | YES  |     | NULL              |                   |
+| peso                | decimal(5,2)                                                        | YES  |     | NULL              |                   |
+| estatura            | decimal(4,2)                                                        | YES  |     | NULL              |                   |
+| tipo_sangre         | varchar(5)                                                          | YES  |     | NULL              |                   |
+| alergias            | text                                                                | YES  |     | NULL              |                   |
+| padecimientos       | text                                                                | YES  |     | NULL              |                   |
+| usuario_id          | int                                                                 | YES  | MUL | NULL              |                   |
+| fecha_registro      | datetime                                                            | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| tipo_paciente       | enum('general','pediatrico','oncologico','obstetrico','geriatrico') | YES  |     | general           |                   |
++---------------------+---------------------------------------------------------------------+------+-----+-------------------+-------------------+
+15 rows in set (0.00 sec)
+
+mysql> UPDATE pacientes p
+    -> JOIN usuarios u ON u.nombre_usuario = p.nombre
+    -> SET p.usuario_id = u.id;
+Query OK, 0 rows affected (0.01 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> SELECT id, nombre, usuario_id FROM pacientes;
++----+-------------------+------------+
+| id | nombre            | usuario_id |
++----+-------------------+------------+
+|  1 | Guadalupe Camacho |       NULL |
+|  3 | Guadalupe Camacho |       NULL |
+|  5 | Mariana Ramírez   |       NULL |
+|  6 | Carolina          |       NULL |
++----+-------------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> UPDATE pacientes p
+    -> JOIN usuarios u ON u.nombre_usuario = p.nombre
+    -> SET p.usuario_id = u.id
+    -> WHERE p.usuario_id IS NULL;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> SELECT id, nombre, usuario_id FROM pacientes;
++----+-------------------+------------+
+| id | nombre            | usuario_id |
++----+-------------------+------------+
+|  1 | Guadalupe Camacho |       NULL |
+|  3 | Guadalupe Camacho |       NULL |
+|  5 | Mariana Ramírez   |       NULL |
+|  6 | Carolina          |       NULL |
++----+-------------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT nombre FROM pacientes;
++-------------------+
+| nombre            |
++-------------------+
+| Guadalupe Camacho |
+| Guadalupe Camacho |
+| Mariana Ramírez   |
+| Carolina          |
++-------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT nombre_usuario FROM usuarios;
++----------------+
+| nombre_usuario |
++----------------+
+| Camila         |
+| Guadalupe      |
+| Jesús Martínez |
+| Juan15         |
+| Kathy          |
+| Leonardo       |
+| Marlenne       |
+| Yanelli        |
++----------------+
+8 rows in set (0.00 sec)
+
+mysql> CREATE TABLE enfermeros (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   usuario_id INT NOT NULL,
+    ->   nombre VARCHAR(100) NOT NULL,
+    ->   turno ENUM('matutino','vespertino','nocturno') NOT NULL,
+    ->   telefono VARCHAR(20),
+    ->
+    ->   CONSTRAINT fk_enfermero_usuario
+    ->     FOREIGN KEY (usuario_id)
+    ->     REFERENCES usuarios(id)
+    ->     ON DELETE CASCADE
+    -> );
+ERROR 1050 (42S01): Table 'enfermeros' already exists
+mysql> DROP TABLE enfermeros IF EXISTS;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'IF EXISTS' at line 1
+mysql> DROP TABLE IF EXISTS enfermeros;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE enfermeros (
+    ->   id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   usuario_id INT NOT NULL,
+    ->   nombre VARCHAR(100) NOT NULL,
+    ->   turno ENUM('matutino','vespertino','nocturno') NOT NULL,
+    ->   telefono VARCHAR(20),
+    ->
+    ->   CONSTRAINT fk_enfermero_usuario
+    ->     FOREIGN KEY (usuario_id)
+    ->     REFERENCES usuarios(id)
+    ->     ON DELETE CASCADE
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> ALTER TABLE enfermeros
+    -> ADD activo TINYINT(1) NOT NULL DEFAULT 1;
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> SELECT * FROM pacientes;
++----+-------------------+--------+------+------------+----------------------+---------------------+-------+----------+-------------+------------+---------------+------------+---------------------+---------------+
+| id | nombre            | genero | edad | telefono   | correo               | frecuencia_cardiaca | peso  | estatura | tipo_sangre | alergias   | padecimientos | usuario_id | fecha_registro      | tipo_paciente |
++----+-------------------+--------+------+------------+----------------------+---------------------+-------+----------+-------------+------------+---------------+------------+---------------------+---------------+
+|  1 | Guadalupe Camacho | F      |   48 | 6641846239 | gcmcho32@gmail.com   |                  95 | 58.30 |     1.65 | B+          | Ninguna    | Ninguna       |       NULL | 2025-12-14 02:46:24 | geriatrico    |
+|  3 | Guadalupe Camacho | F      |   52 | 6642358947 | gcmcho32@gmail.com   |                  89 | 58.90 |     1.63 | O+          | Penicilina | Ninguno       |       NULL | 2025-12-14 13:42:33 | general       |
+|  5 | Mariana Ramírez   | F      |   25 | 6641846239 | MariRM4810@gmail.com |                  78 | 66.80 |     1.71 | A-          | Penicilina | Asma          |       NULL | 2025-12-14 15:50:33 | obstetrico    |
+|  6 | Carolina          | F      |    8 | 6642358977 | caro4810@gmail.com   |                 102 | 48.60 |     1.50 | AB-         | N/A        | Migrañas      |       NULL | 2025-12-14 16:58:57 | pediatrico    |
++----+-------------------+--------+------+------------+----------------------+---------------------+-------+----------+-------------+------------+---------------+------------+---------------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM pacientes;
++----+-------------------+--------+------+------------+----------------------+---------------------+-------+----------+-------------+------------+---------------+------------+---------------------+---------------+
+| id | nombre            | genero | edad | telefono   | correo               | frecuencia_cardiaca | peso  | estatura | tipo_sangre | alergias   | padecimientos | usuario_id | fecha_registro      | tipo_paciente |
++----+-------------------+--------+------+------------+----------------------+---------------------+-------+----------+-------------+------------+---------------+------------+---------------------+---------------+
+|  1 | Guadalupe Camacho | F      |   48 | 6641846239 | gcmcho32@gmail.com   |                  95 | 58.30 |     1.65 | B+          | Ninguna    | Ninguna       |       NULL | 2025-12-14 02:46:24 | geriatrico    |
+|  3 | Guadalupe Camacho | F      |   52 | 6642358947 | gcmcho32@gmail.com   |                  89 | 58.90 |     1.63 | O+          | Penicilina | Ninguno       |       NULL | 2025-12-14 13:42:33 | general       |
+|  5 | Mariana Ramírez   | F      |   25 | 6641846239 | MariRM4810@gmail.com |                  78 | 66.80 |     1.71 | A-          | Penicilina | Asma          |       NULL | 2025-12-14 15:50:33 | obstetrico    |
+|  6 | Carolina          | F      |    8 | 6642358977 | caro4810@gmail.com   |                 102 | 48.60 |     1.50 | AB-         | N/A        | Migrañas      |       NULL | 2025-12-14 16:58:57 | pediatrico    |
+|  8 | Marlenne          | F      |   35 | 6647645231 | mcCoria.90@gmail.com |                NULL |  NULL |     NULL | NULL        | NULL       | NULL          |       NULL | 2025-12-14 19:31:59 | obstetrico    |
++----+-------------------+--------+------+------------+----------------------+---------------------+-------+----------+-------------+------------+---------------+------------+---------------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->   p.id,
+    ->   p.nombre,
+    ->   p.usuario_id,
+    ->   u.nombre_usuario
+    -> FROM pacientes p
+    -> LEFT JOIN usuarios u ON p.usuario_id = u.id;
++----+-------------------+------------+----------------+
+| id | nombre            | usuario_id | nombre_usuario |
++----+-------------------+------------+----------------+
+|  1 | Guadalupe Camacho |       NULL | NULL           |
+|  3 | Guadalupe Camacho |       NULL | NULL           |
+|  5 | Mariana Ramírez   |       NULL | NULL           |
+|  6 | Carolina          |       NULL | NULL           |
+|  8 | Marlenne          |       NULL | NULL           |
++----+-------------------+------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE pacientes
+    -> SET usuario_id = 15
+    -> WHERE id = 3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT
+    ->   p.id,
+    ->   p.nombre,
+    ->   p.usuario_id,
+    ->   u.nombre_usuario
+    -> FROM pacientes p
+    -> LEFT JOIN usuarios u ON p.usuario_id = u.id;
++----+-------------------+------------+----------------+
+| id | nombre            | usuario_id | nombre_usuario |
++----+-------------------+------------+----------------+
+|  1 | Guadalupe Camacho |       NULL | NULL           |
+|  3 | Guadalupe Camacho |         15 | Alex           |
+|  5 | Mariana Ramírez   |       NULL | NULL           |
+|  6 | Carolina          |       NULL | NULL           |
+|  8 | Marlenne          |       NULL | NULL           |
++----+-------------------+------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT
+    ->   p.id,
+    ->   p.nombre,
+    ->   p.usuario_id,
+    ->   u.nombre_usuario
+    -> FROM pacientes p
+    -> LEFT JOIN usuarios u ON p.usuario_id = u.id;
++----+-------------------+------------+----------------+
+| id | nombre            | usuario_id | nombre_usuario |
++----+-------------------+------------+----------------+
+|  1 | Guadalupe Camacho |       NULL | NULL           |
+|  3 | Guadalupe Camacho |         15 | Alex           |
+|  5 | Mariana Ramírez   |       NULL | NULL           |
+|  6 | Carolina          |       NULL | NULL           |
+|  8 | Marlenne          |       NULL | NULL           |
+|  9 | Ernesto J.        |          1 | Kathy          |
++----+-------------------+------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> ALTER TABLE citas
+    -> ADD COLUMN enfermero_id INT NULL,
+    -> ADD CONSTRAINT fk_citas_enfermero
+    -> FOREIGN KEY (enfermero_id) REFERENCES enfermeros(id);
+Query OK, 5 rows affected (0.07 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT id, fecha, hora, estado
+    -> FROM citas
+    -> ORDER BY id DESC;
++----+------------+----------+------------+
+| id | fecha      | hora     | estado     |
++----+------------+----------+------------+
+|  5 | 2025-12-18 | 14:40:00 | programada |
+|  4 | 2025-12-14 | 16:00:00 | programada |
+|  3 | 2025-12-12 | 14:30:00 | programada |
+|  2 | 2025-12-13 | 17:50:00 | programada |
+|  1 | 2025-12-18 | 15:30:00 | finalizada |
++----+------------+----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> EXIT;
